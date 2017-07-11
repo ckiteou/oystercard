@@ -20,15 +20,6 @@ describe Oystercard do
     end
   end
 
-  describe "#deduct" do
-    it { is_expected.to respond_to(:deduct).with(1).argument }
-
-    it "can deduct from the balance" do
-      subject.top_up(20)
-      expect{ subject.deduct 3 }.to change{ subject.balance }.by -3
-    end
-  end
-
   describe "#touch_in" do
     it { is_expected.to respond_to(:touch_in) }
 
