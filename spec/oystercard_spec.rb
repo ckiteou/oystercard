@@ -1,6 +1,7 @@
 require 'oystercard'
 
 describe Oystercard do
+  subject(:oystercard) { described_class.new }
   it 'has a balance of zero' do
     expect(subject.balance).to eq(0)
   end
@@ -19,7 +20,7 @@ describe Oystercard do
     end
   end
 
-  describe "#educt" do
+  describe "#deduct" do
     it { is_expected.to respond_to(:deduct).with(1).argument }
 
     it "can deduct from the balance" do
@@ -30,6 +31,12 @@ describe Oystercard do
 
   describe "#touch_in" do
     it { is_expected.to respond_to(:touch_in) }
+
+    it "raises an error" do
+      subject.balance < Oystercard::MINIMUM_BALANCE
+      message = "Insufficient balance to touch in"
+      expect{subject.touch_in}.to raise_error message
+    end
   end
 
   describe "#touch_out" do
@@ -43,10 +50,11 @@ describe Oystercard do
       expect(subject).not_to be_in_journey
     end
 
-    it "expects in_journey? to equal true if touch_in" do
+    it "can touch out" do
+      subject.top_up(1)
       subject.touch_in
       subject.touch_out
-      expect(subject.in_journey?).to eq false
+      expect(subject).not_to be_in_journey
     end
   end
 end
