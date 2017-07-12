@@ -2,7 +2,8 @@ require 'oystercard'
 
 describe Oystercard do
   subject(:oystercard) { described_class.new }
-  let(:station){ double :station }
+  let(:entry_station) { double :station }
+  let(:exit_station) { double :station }
 
   it 'has a balance of zero' do
     expect(subject.balance).to eq(0)
@@ -28,19 +29,7 @@ describe Oystercard do
     it "raises an error" do
       subject.balance < Oystercard::MINIMUM_BALANCE
       message = "Insufficient balance to touch in"
-      expect{subject.touch_in(station)}.to raise_error message
-    end
-    it "stores the entry location'" do
-      subject.top_up(1)
-      subject.touch_in(station)
-      expect(subject.entry_station).to eq station
-    end
-
-    it "sets entry_station to 'nil' when touch_out" do
-      subject.top_up(1)
-      subject.touch_in(station)
-      subject.touch_out
-      expect(subject.entry_station).to eq nil
+      expect{subject.touch_in(entry_station)}.to raise_error message
     end
   end
 
@@ -56,10 +45,24 @@ describe Oystercard do
     end
 
     it "can touch out" do
-      subject.top_up(1)
-      subject.touch_in(station)
-      subject.touch_out
+      subject.top_up(10)
+      subject.touch_in(entry_station)
+      subject.touch_out(exit_station)
       expect(subject).not_to be_in_journey
+    end
+
+      it 'has an empty list of journeys by default' do
+      subject.top_up(10)
+      expect(subject.journeys).to be_empty
+    end
+    let(:journey){ {entry_station: entry_station, exit_station: exit_station} }
+    let(:journeys){ double :journeys }
+
+    it 'stores a journey' do
+      subject.top_up(10)
+      subject.touch_in(entry_station)
+      subject.touch_out(exit_station)
+      expect(subject.journeys).to include journey
     end
   end
 end
