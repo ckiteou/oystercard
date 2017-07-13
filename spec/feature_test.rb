@@ -49,15 +49,20 @@ end
 p oystercard = Oystercard.new
 p oystercard.top_up(20)
 p oystercard.in_journey?
-  oystercard.touch_in("Oxford Station")
+  angel = Station.new("angel", 1)
+p oystercard.touch_in(angel)
 p oystercard.in_journey?
-  oystercard.touch_out("Holborn")
-p oystercard.in_journey?
-p oystercard.journeys
-p oystercard.in_journey?
-  oystercard.touch_in("Canary Wharf")
-p oystercard.in_journey?
-  oystercard.touch_out("Bank")
+  holborn = Station.new("Holborn", 1)
+p oystercard.touch_out(holborn)
 p oystercard.in_journey?
 p oystercard.journeys
+p oystercard.in_journey?
+  angel = Station.new("angel", 1)
+p oystercard.touch_in(angel)
+p oystercard.in_journey?
+  holborn = Station.new("Holborn", 1)
+p oystercard.touch_out(holborn)
+p oystercard.in_journey?
+p oystercard.journeys
+
 =end
