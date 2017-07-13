@@ -44,17 +44,26 @@ describe Oystercard do
       expect(subject).not_to be_in_journey
     end
 
+    it 'during a journey it returns true' do
+      subject.top_up(10)
+      subject.touch_in(entry_station)
+      expect(subject).to be_in_journey
+    end
+
+
+
     it "can touch out" do
       subject.top_up(10)
       subject.touch_in(entry_station)
       subject.touch_out(exit_station)
       expect(subject).not_to be_in_journey
     end
-
+=begin
       it 'has an empty list of journeys by default' do
       subject.top_up(10)
       expect(subject.journeys).to be_empty
     end
+=end
     let(:journey){ {entry_station: entry_station, exit_station: exit_station} }
     let(:journeys){ double :journeys }
 
